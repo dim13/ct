@@ -11,19 +11,21 @@ import (
 )
 
 func main() {
-	res := map[*regexp.Regexp]func(string, ...interface{}) string{
-		regexp.MustCompile("(PASS)"): color.GreenString,
-		regexp.MustCompile("(FAIL)"): color.RedString,
-		regexp.MustCompile("(RUN)"):  color.BlueString,
-		regexp.MustCompile("(SKIP)"): color.YellowString,
-		regexp.MustCompile("^(ok)"):  color.CyanString,
-		regexp.MustCompile("^(\\?)"): color.MagentaString,
+	res := map[*regexp.Regexp]string{
+		regexp.MustCompile(`(PASS)`): color.GreenString(`$1`),
+		regexp.MustCompile(`(FAIL)`): color.RedString(`$1`),
+		regexp.MustCompile(`(RUN)`):  color.BlueString(`$1`),
+		regexp.MustCompile(`(SKIP)`): color.YellowString(`$1`),
+		regexp.MustCompile(`^(\?)`):  color.MagentaString(`$1`),
+		regexp.MustCompile(`^(ok)`):  color.CyanString(`$1`),
+		regexp.MustCompile(`(\S+\.go):(\d+):`): fmt.Sprintf("%v:%v:",
+			color.CyanString(`$1`), color.RedString(`$2`)),
 	}
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
 		t := scanner.Text()
-		for re, co := range res {
-			t = re.ReplaceAllString(t, co("$1"))
+		for re, s := range res {
+			t = re.ReplaceAllString(t, s)
 		}
 		fmt.Println(t)
 	}
