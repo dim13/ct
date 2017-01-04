@@ -18,7 +18,7 @@ func main() {
 		regexp.MustCompile(`(SKIP)`): color.YellowString(`$1`),
 		regexp.MustCompile(`^(\?)`):  color.MagentaString(`$1`),
 		regexp.MustCompile(`^(ok)`):  color.CyanString(`$1`),
-		regexp.MustCompile(`(\S+\.go):(\d+):`): fmt.Sprintf("%v:%v:",
+		regexp.MustCompile(`(\S+\.go):(\d+)`): fmt.Sprintf("%v:%v",
 			color.CyanString(`$1`), color.RedString(`$2`)),
 	}
 	scanner := bufio.NewScanner(os.Stdin)
