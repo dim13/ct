@@ -1,4 +1,4 @@
-package main // import "github.com/dim13/ct"
+package main
 
 import (
 	"bufio"
